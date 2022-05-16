@@ -17,7 +17,7 @@ const { ApolloServer, gql } = require('apollo-server');
 const { buildSubgraphSchema } = require('@apollo/subgraph');
 const { readFileSync } = require('fs');
 
-const port = process.env.APOLLO_PORT || 4000;
+const port = process.env.APOLLO_PORT || 80;
 
 const products = [
     { id: 'apollo-federation', sku: 'federation', package: '@apollo/federation', variation: "OSS" },

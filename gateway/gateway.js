@@ -14,7 +14,7 @@ if (process.env.APOLLO_OTEL_EXPORTER_TYPE) {
 }
 
 // Main
-const { ApolloServer } = require('apollo-server');
+const { ApolloServer } = require('apollo-server-express');
 const { ApolloServerPluginUsageReporting } = require('apollo-server-core');
 const { ApolloGateway } = require('@apollo/gateway');
 const { readFileSync } = require('fs');
@@ -48,6 +48,30 @@ const server = new ApolloServer({
   plugins
 });
 
-server.listen( {port: port} ).then(({ url }) => {
-  console.log(`🚀 Graph Router ready at ${url}`);
-}).catch(err => {console.error(err)});
+//server.listen( {port: port} ).then(({ url }) => {
+//  console.log(`🚀 Graph Router ready at ${url}`);
+//}).catch(err => {console.error(err)});
+
+const express = require('express');
+const { createServer } = require('https');
+const fs = require('fs');
+
+server.start().then( async () => {
+    const app = express();
+	server.applyMiddleware({ app });
+	
+	const key = '/etc/letsencrypt/live/apollo.graphqlize.net/privkey.pem'
+	const cert = '/etc/letsencrypt/live/apollo.graphqlize.net/fullchain.pem'
+
+	httpServer = createServer(
+		{
+		  key: fs.readFileSync(key),
+		  cert: fs.readFileSync(cert),
+  		}, app);
+
+	await new Promise(resolve =>
+		httpServer.listen({ port: 443 }, resolve),
+	);
+
+	console.log('🚀 Server ready at port 443');
+});

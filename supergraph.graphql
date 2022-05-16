@@ -29,10 +29,8 @@ type DeliveryEstimates
 scalar join__FieldSet
 
 enum join__Graph {
-  INVENTORY @join__graph(name: "inventory", url: "http://inventory:4000/graphql")
-  PANDAS @join__graph(name: "pandas", url: "http://pandas:4000/graphql")
-  PRODUCTS @join__graph(name: "products", url: "http://products:4000/graphql")
-  USERS @join__graph(name: "users", url: "http://users:4000/graphql")
+  INVENTORY @join__graph(name: "inventory", url: "http://inventory.graphqlize.net/graphql")
+  PRODUCTS @join__graph(name: "products", url: "http://products.graphqlize.net/graphql")
 }
 
 scalar link__Import
@@ -47,13 +45,6 @@ enum link__Purpose {
   `EXECUTION` features provide metadata necessary for operation execution.
   """
   EXECUTION
-}
-
-type Panda
-  @join__type(graph: PANDAS)
-{
-  name: ID!
-  favoriteFood: String @tag(name: "nom-nom-nom")
 }
 
 type Product implements ProductItf & SkuItf
@@ -71,7 +62,6 @@ type Product implements ProductItf & SkuItf
   sku: String @join__field(graph: PRODUCTS)
   package: String @join__field(graph: PRODUCTS)
   variation: ProductVariation @join__field(graph: PRODUCTS)
-  createdBy: User @join__field(graph: PRODUCTS)
 }
 
 type ProductDimension
@@ -93,7 +83,6 @@ interface ProductItf implements SkuItf
   sku: String @join__field(graph: PRODUCTS)
   package: String @join__field(graph: PRODUCTS)
   variation: ProductVariation @join__field(graph: PRODUCTS)
-  createdBy: User @join__field(graph: PRODUCTS)
 }
 
 type ProductVariation
@@ -104,12 +93,8 @@ type ProductVariation
 
 type Query
   @join__type(graph: INVENTORY)
-  @join__type(graph: PANDAS)
   @join__type(graph: PRODUCTS)
-  @join__type(graph: USERS)
 {
-  allPandas: [Panda] @join__field(graph: PANDAS)
-  panda(name: ID!): Panda @join__field(graph: PANDAS)
   allProducts: [ProductItf] @join__field(graph: PRODUCTS)
   product(id: ID!): ProductItf @join__field(graph: PRODUCTS)
 }
@@ -127,13 +112,4 @@ interface SkuItf
   @join__type(graph: PRODUCTS)
 {
   sku: String
-}
-
-type User
-  @join__type(graph: PRODUCTS, key: "email")
-  @join__type(graph: USERS, key: "email")
-{
-  email: ID! @tag(name: "test-from-users")
-  totalProductsCreated: Int
-  name: String @join__field(graph: USERS)
 }
