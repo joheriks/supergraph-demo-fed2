@@ -17,5 +17,6 @@ dependencies {
   implementation("com.apollographql.federation:federation-graphql-java-support:2.0.0")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+  implementation("com.google.cloud:google-cloud-logging-logback:0.123.12-alpha")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

@@ -14,7 +14,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import java.io.IOException
 import javax.annotation.PostConstruct
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SpringBootApplication
 class Application
@@ -26,6 +27,8 @@ fun main(args: Array<String>) {
 @Component
 class GraphQLProvider {
   private var graphQL: GraphQL? = null
+
+  private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
   @Bean
   fun graphQL(): GraphQL? {
@@ -48,14 +51,24 @@ class GraphQLProvider {
     )
       .fetchEntities { environment ->
         environment.getArgument<List<Map<String, Any>>>("representations").map { representation ->
-          when(representation["__typename"]) {
-            "Product" -> allProducts.firstOrNull { it.id == representation["id"] } ?: error("Product not found: $representation")
-            else -> error("Unknown type: $representation")
+          try {
+              val result = when (representation["__typename"]) {
+                  "Product" -> allProducts.firstOrNull { it.id == representation["id"] }
+                          ?: error("Product not found: $representation")
+                  else -> error("Unknown type: $representation")
+              }
+              println("Found entity $result matching representation $representation")
+              logger.info("Found entity $result matching representation $representation") // DOESN'T LOG?
+              result
+          } catch (e: RuntimeException) {
+              println("Unknown entity: $representation")
+              logger.info("Unknown entity: $representation") // DOESN'T LOG?
+              throw e
           }
         }
       }.resolveEntityType { environment ->
-        when(environment.getObject<Any>()) {
-          is Product ->  environment.schema.getObjectType("Product");
+       when(environment.getObject<Any>()) {
+          is Product -> environment.schema.getObjectType("Product");
           else -> null
         }
       }
