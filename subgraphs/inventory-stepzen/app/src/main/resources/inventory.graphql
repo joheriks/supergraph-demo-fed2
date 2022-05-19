@@ -1,0 +1,14 @@
+type DeliveryEstimates {
+  estimatedDelivery: String
+  fastestDelivery: String
+}
+
+type Query {
+  getDeliveryEstimates(id: ID!): DeliveryEstimates
+}
+
+enum ShippingClass {
+  STANDARD
+  EXPRESS
+  OVERNIGHT
+}

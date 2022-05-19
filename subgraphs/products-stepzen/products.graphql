@@ -1,0 +1,28 @@
+type Query {
+  allProducts: [Product]
+  product(id: ID!): Product
+}
+
+type Product {
+  id: ID!
+  sku: String
+  package: String
+  variation: ProductVariation
+  dimensions: ProductDimension
+  createdBy: User
+}
+enum ShippingClass {
+  STANDARD
+  EXPRESS
+}
+type ProductVariation {
+  id: ID!
+}
+type ProductDimension {
+  size: String
+  weight: Float
+}
+type User {
+  email: ID!
+  totalProductsCreated: Int
+}
