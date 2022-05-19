@@ -71,7 +71,7 @@ const resolvers = {
         },
         createdBy: (reference) => {
             logger.info("Product > createdBy", reference)
-            return { email: 'support@apollographql.com', totalProductsCreated: 1337 }
+            return { email: 'support@stepzen.com', totalProductsCreated: 1338 }
         },
         __resolveReference: (reference) => {
             logger.info("Product > __resolveReference", reference)
