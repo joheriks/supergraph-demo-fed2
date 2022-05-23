@@ -29,8 +29,8 @@ type DeliveryEstimates
 scalar join__FieldSet
 
 enum join__Graph {
-  INVENTORY @join__graph(name: "inventory", url: "http://inventory.graphqlize.net/graphql")
-  PRODUCTS @join__graph(name: "products", url: "http://products.graphqlize.net/graphql")
+  INVENTORY @join__graph(name: "inventory", url: "http://inventory-apollo.graphqlize.net/graphql")
+  PRODUCTS @join__graph(name: "products", url: "http://products-apollo.graphqlize.net/graphql")
 }
 
 scalar link__Import

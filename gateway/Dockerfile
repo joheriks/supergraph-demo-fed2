@@ -14,6 +14,6 @@ COPY gateway.js .
 
 COPY start.sh .
 
-COPY ../supergraph.graphql /etc/config/supergraph.graphql
+COPY supergraph.graphql /etc/config/supergraph.graphql
 
 CMD ./start.sh

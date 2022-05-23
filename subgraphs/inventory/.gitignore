@@ -1,1 +1,3 @@
 app/bin
+app/gradle
+app/gradlew*
