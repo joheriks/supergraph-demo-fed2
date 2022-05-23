@@ -4,7 +4,12 @@ type DeliveryEstimates {
 }
 
 type Query {
-  getDeliveryEstimates(id: ID!): DeliveryEstimates
+  getDeliveryEstimates(id: ID!, zip: String, dimension: ProductDimension): DeliveryEstimates
+}
+
+input ProductDimension {
+  size: String
+  weight: Float
 }
 
 enum ShippingClass {
